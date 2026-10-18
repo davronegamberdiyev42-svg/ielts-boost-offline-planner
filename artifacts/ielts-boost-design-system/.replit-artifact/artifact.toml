@@ -1,0 +1,19 @@
+kind = "design-system"
+previewPath = "/ielts-boost-design-system/"
+title = "IELTS Boost Design System"
+description = "IELTS Boost uchun o‘zbek tilidagi mobil o‘quv tajribasi: Reading, Writing va Speaking mashqlarini bir xil, qulay va oflayn ishlashga mos vizual til bilan birlashtiradi."
+version = "1.0.0"
+id = "artifacts/ielts-boost-design-system"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/ielts-boost-design-system/" ]
+localPort = 25967
+
+[services.development]
+run = "pnpm --filter @workspace/ielts-boost-design-system run dev"
+
+[services.env]
+PORT = "25967"
+BASE_PATH = "/ielts-boost-design-system/"
