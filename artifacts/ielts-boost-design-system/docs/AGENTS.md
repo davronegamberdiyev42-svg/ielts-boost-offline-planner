@@ -17,6 +17,9 @@ on it and import its theme and components directly.
 - `src/components/ui/` — the initial shadcn scaffold, exported as
   `./components/*`. Generated systems keep and theme it; Figma imports prune and
   restyle it; code imports replace it with the source component library.
+- `src/components/native/` — React Native primitives exported through the same
+  `./components/*` package path. These use native `Pressable`, `Text`, and
+  `TextInput` elements; they are not imported into the web-only Vite preview.
 - `src/lib/` (`cn`) and `src/hooks/` — exported as `./lib/*` and `./hooks/*`.
 - `src/App.tsx` — the entry point for the living style guide.
 - `src/preview/DesignSystemBrowser.tsx` — the persistent grouped navigation,
@@ -79,6 +82,11 @@ Native components live under `src/components/native/`. Match an existing web
 component family's public API wherever React Native supports it, and document
 platform-required differences in "What's here". Native components are not
 imported into the web-only Vite preview.
+
+The native theme is exported from `src/lib/native-theme.tsx`, with color and
+font hooks under `src/hooks/`. It uses the platform's system sans-serif and
+serif fonts because the source contains no font files; Android uses its built-in
+serif family where Georgia is unavailable.
 
 Keep `DESIGN_SYSTEM.title` and `DESIGN_SYSTEM.description` accurate. Update
 `NAV_GROUPS` whenever the system gains or loses a foundation, content guideline,

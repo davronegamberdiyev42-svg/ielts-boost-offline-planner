@@ -1,0 +1,24 @@
+kind = "mobile"
+previewPath = "/"
+title = "IELTS Boost"
+description = "O‘zbek tilidagi IELTS tayyorgarlik ilovasi: mavjud 84 kunlik Reading rejasini saqlaydi va mashqlar, mock natijalari, taymerlar hamda o‘quv tarixini telefonda boshqaradi."
+version = "1.0.0"
+id = "artifacts/ielts-boost-mobile"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/" ]
+localPort = 25316
+
+[services.development]
+run = "pnpm --filter @workspace/ielts-boost-mobile run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ielts-boost-mobile", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/ielts-boost-mobile", "run", "serve" ]
+
+[services.env]
+PORT = "25316"
+BASE_PATH = "/"

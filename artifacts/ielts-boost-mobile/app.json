@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "IELTS Boost",
+    "slug": "ielts-boost-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "ielts-boost-mobile",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#f3eee4"
+    },
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {},
+    "web": {
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": ["expo-router", "expo-audio", "expo-notifications"],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
