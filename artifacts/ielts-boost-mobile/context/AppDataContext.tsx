@@ -53,12 +53,45 @@ export type MockResult = {
   createdAt: number;
 };
 
+export type SpeakingPractice = {
+  id: string;
+  part: 1 | 2 | 3;
+  topic: string;
+  prompt: string;
+  audioUri: string | null;
+  fluency: number;
+  vocabulary: number;
+  grammar: number;
+  pronunciation: number;
+  createdAt: number;
+};
+
+export type WritingTaskKey = "task1" | "task2";
+export type WritingErrorRecord = {
+  id: string;
+  date: string;
+  mistake: string;
+  correction: string;
+  createdAt: number;
+};
+
+export type PronunciationPhrase = {
+  id: string;
+  text: string;
+  createdAt: number;
+};
+
 export type LocalAppData = {
   version: 1;
   planStartDate: string | null;
   readingDays: Record<string, ReadingDayRecord>;
   shadowingLinks: Record<string, string>;
   mockResults: MockResult[];
+  speakingPractices: SpeakingPractice[];
+  writingDrafts: Record<WritingTaskKey, string>;
+  writingChecklist: Record<WritingTaskKey, Record<string, boolean>>;
+  writingErrors: WritingErrorRecord[];
+  pronunciationPhrases: PronunciationPhrase[];
   activeTimer: ActiveTimer | null;
   lastTimerResult: TimerResult | null;
 };
@@ -84,6 +117,19 @@ type AppDataContextValue = {
   addMockResult: (
     result: Omit<MockResult, "id" | "createdAt">,
   ) => Promise<boolean>;
+  addSpeakingPractice: (
+    practice: Omit<SpeakingPractice, "id" | "createdAt">,
+  ) => Promise<boolean>;
+  setWritingDraft: (task: WritingTaskKey, text: string) => Promise<boolean>;
+  toggleWritingChecklist: (
+    task: WritingTaskKey,
+    item: string,
+  ) => Promise<boolean>;
+  addWritingError: (
+    entry: Omit<WritingErrorRecord, "id" | "createdAt">,
+  ) => Promise<boolean>;
+  addPronunciationPhrase: (text: string) => Promise<boolean>;
+  removePronunciationPhrase: (id: string) => Promise<boolean>;
   startTimer: (label: string, durationSeconds: number) => Promise<TimerStartResult>;
   pauseTimer: () => Promise<void>;
   resumeTimer: () => Promise<TimerStartResult>;
@@ -96,6 +142,11 @@ const initialData: LocalAppData = {
   readingDays: {},
   shadowingLinks: {},
   mockResults: [],
+  speakingPractices: [],
+  writingDrafts: { task1: "", task2: "" },
+  writingChecklist: { task1: {}, task2: {} },
+  writingErrors: [],
+  pronunciationPhrases: [],
   activeTimer: null,
   lastTimerResult: null,
 };
@@ -258,6 +309,87 @@ export function AppDataProvider({ children }: PropsWithChildren) {
     [persist],
   );
 
+  const addSpeakingPractice = useCallback(
+    (practice: Omit<SpeakingPractice, "id" | "createdAt">) => {
+      const createdAt = Date.now();
+      const entry: SpeakingPractice = {
+        ...practice,
+        id: `${createdAt}-${Math.random().toString(36).slice(2, 9)}`,
+        createdAt,
+      };
+      return persist({
+        ...dataRef.current,
+        speakingPractices: [...dataRef.current.speakingPractices, entry],
+      });
+    },
+    [persist],
+  );
+
+  const setWritingDraft = useCallback(
+    (task: WritingTaskKey, text: string) =>
+      persist({
+        ...dataRef.current,
+        writingDrafts: { ...dataRef.current.writingDrafts, [task]: text },
+      }),
+    [persist],
+  );
+
+  const toggleWritingChecklist = useCallback(
+    (task: WritingTaskKey, item: string) => {
+      const checklist = dataRef.current.writingChecklist[task] ?? {};
+      return persist({
+        ...dataRef.current,
+        writingChecklist: {
+          ...dataRef.current.writingChecklist,
+          [task]: { ...checklist, [item]: !checklist[item] },
+        },
+      });
+    },
+    [persist],
+  );
+
+  const addWritingError = useCallback(
+    (entry: Omit<WritingErrorRecord, "id" | "createdAt">) => {
+      const createdAt = Date.now();
+      const saved: WritingErrorRecord = {
+        ...entry,
+        id: `${createdAt}-${Math.random().toString(36).slice(2, 9)}`,
+        createdAt,
+      };
+      return persist({
+        ...dataRef.current,
+        writingErrors: [...dataRef.current.writingErrors, saved],
+      });
+    },
+    [persist],
+  );
+
+  const addPronunciationPhrase = useCallback(
+    (text: string) => {
+      const phrase: PronunciationPhrase = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+        text,
+        createdAt: Date.now(),
+      };
+      return persist({
+        ...dataRef.current,
+        pronunciationPhrases: [...dataRef.current.pronunciationPhrases, phrase],
+      });
+    },
+    [persist],
+  );
+
+  const removePronunciationPhrase = useCallback(
+    (id: string) =>
+      persist({
+        ...dataRef.current,
+        pronunciationPhrases: dataRef.current.pronunciationPhrases.filter(
+          (phrase) => phrase.id !== id,
+        ),
+      }),
+    [persist],
+  );
+
   const startTimer = useCallback(
     async (label: string, durationSeconds: number): Promise<TimerStartResult> => {
       if (
@@ -383,6 +515,8 @@ export function AppDataProvider({ children }: PropsWithChildren) {
     );
     const resumed: ActiveTimer = {
       ...timer,
+      startedAt:
+        Date.now() - (timer.durationMs - timer.pausedRemainingMs),
       endsAt: Date.now() + timer.pausedRemainingMs,
       pausedRemainingMs: null,
       notificationId: null,
@@ -461,6 +595,12 @@ export function AppDataProvider({ children }: PropsWithChildren) {
       setReadingMetric,
       setShadowingLink,
       addMockResult,
+      addSpeakingPractice,
+      setWritingDraft,
+      toggleWritingChecklist,
+      addWritingError,
+      addPronunciationPhrase,
+      removePronunciationPhrase,
       startTimer,
       pauseTimer,
       resumeTimer,
@@ -476,6 +616,12 @@ export function AppDataProvider({ children }: PropsWithChildren) {
       setReadingMetric,
       setShadowingLink,
       addMockResult,
+      addSpeakingPractice,
+      setWritingDraft,
+      toggleWritingChecklist,
+      addWritingError,
+      addPronunciationPhrase,
+      removePronunciationPhrase,
       startTimer,
       pauseTimer,
       resumeTimer,

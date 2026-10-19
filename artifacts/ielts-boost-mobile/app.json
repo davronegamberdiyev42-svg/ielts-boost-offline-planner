@@ -17,7 +17,16 @@
     "web": {
       "favicon": "./assets/images/icon.png"
     },
-    "plugins": ["expo-router", "expo-audio", "expo-notifications"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Ovozli javoblaringizni yozish uchun mikrofonga ruxsat bering."
+        }
+      ],
+      "expo-notifications"
+    ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true

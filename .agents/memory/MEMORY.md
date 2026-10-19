@@ -1,0 +1,1 @@
+- [IELTS Boost scope rules](ielts-boost-scope.md) — preserve the 84-day Reading plan/resources; add features separately, with no login and on-device Uzbek UI.

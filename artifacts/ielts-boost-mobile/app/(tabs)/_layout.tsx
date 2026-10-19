@@ -29,6 +29,22 @@ function NativeTabLayout() {
         <NativeTabs.Trigger.Icon sf={{ default: "chart.bar", selected: "chart.bar.fill" }} />
         <NativeTabs.Trigger.Label>Mocklar</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="speaking">
+        <NativeTabs.Trigger.Icon sf={{ default: "waveform", selected: "waveform" }} />
+        <NativeTabs.Trigger.Label>Speaking</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="writing">
+        <NativeTabs.Trigger.Icon sf={{ default: "pencil.and.outline", selected: "pencil.and.outline" }} />
+        <NativeTabs.Trigger.Label>Writing</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="pronunciation">
+        <NativeTabs.Trigger.Icon sf={{ default: "speaker.wave.2", selected: "speaker.wave.2.fill" }} />
+        <NativeTabs.Trigger.Label>Talaffuz</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="report">
+        <NativeTabs.Trigger.Icon sf={{ default: "calendar", selected: "calendar" }} />
+        <NativeTabs.Trigger.Label>Hisobot</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }
@@ -103,6 +119,54 @@ function ClassicTabLayout() {
               <SymbolView name="chart.bar" tintColor={color} size={24} />
             ) : (
               <Feather name="bar-chart-2" size={22} color={color} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="speaking"
+        options={{
+          title: "Speaking",
+          tabBarIcon: ({ color }) =>
+            isIOS ? (
+              <SymbolView name="waveform" tintColor={color} size={24} />
+            ) : (
+              <Feather name="mic" size={22} color={color} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="writing"
+        options={{
+          title: "Writing",
+          tabBarIcon: ({ color }) =>
+            isIOS ? (
+              <SymbolView name="pencil.and.outline" tintColor={color} size={24} />
+            ) : (
+              <Feather name="edit-3" size={22} color={color} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="pronunciation"
+        options={{
+          title: "Talaffuz",
+          tabBarIcon: ({ color }) =>
+            isIOS ? (
+              <SymbolView name="speaker.wave.2" tintColor={color} size={24} />
+            ) : (
+              <Feather name="volume-2" size={22} color={color} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="report"
+        options={{
+          title: "Hisobot",
+          tabBarIcon: ({ color }) =>
+            isIOS ? (
+              <SymbolView name="calendar" tintColor={color} size={24} />
+            ) : (
+              <Feather name="calendar" size={22} color={color} />
             ),
         }}
       />
