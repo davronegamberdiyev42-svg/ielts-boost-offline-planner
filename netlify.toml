@@ -6,4 +6,6 @@
   NODE_VERSION = "20"
   NETLIFY_USE_PNPM = "true"
   PORT = "3000"
+  BASE_PATH = "/"
+
 
